@@ -8,12 +8,12 @@ services:
             - "7072:7072"
         image: fhem/fhem:latest
         volumes:
-            - ./fhem/core/:/opt/fhem/
+            - /data/docker/fhem-docker/fhem/core/:/opt/fhem/
         networks:
             - fhem-network
         environment:
             FHEM_UID: 1000
-            FHEM_GID: 1000
+            FHEM_GID: 999
             TIMEOUT: 10
             RESTART: 1
             TELNETPORT: 7072
@@ -27,7 +27,7 @@ services:
         build: habridge
         network_mode: host
         volumes:
-            - ./habridge/data/:/opt/habridge/data/
+            - /data/docker/fhem-docker/habridge/data/:/opt/habridge/data/
 
     mysql:
         restart: always
@@ -39,8 +39,8 @@ services:
             - "33060:33060"
         image: mysql/mysql-server:5.7
         volumes:
-            - ./mysql/init.sql:/docker-entrypoint-initdb.d/fhem-init.sql
-            - ./mysql/data:/var/lib/mysql
+            - /data/docker/fhem-docker/mysql/init.sql:/docker-entrypoint-initdb.d/fhem-init.sql
+            - /data/docker/fhem-docker/mysql/data:/var/lib/mysql
         environment:
             - MYSQL_RANDOM_ROOT_PASSWORD=yes
         networks:
@@ -58,9 +58,9 @@ services:
         networks:
             - fhem-network
         volumes:
-            - ./mqtt/config/:/mqtt/config/
-            - ./mqtt/log/:/mqtt/log/
-            - ./mqtt/data/:/mqtt/data/
+            - /data/docker/fhem-docker/mqtt/config/:/mqtt/config/
+            - /data/docker/fhem-docker/mqtt/log/:/mqtt/log/
+            - /data/docker/fhem-docker/mqtt/data/:/mqtt/data/
 
     nodered:
         restart: always
@@ -69,9 +69,9 @@ services:
         ports:
             - "1880:1880"
         image: nodered/node-red-docker:0.18.4
-        user: "1000:1000"
+        user: "1000:999"
         volumes:
-            - ./nodered/data/:/data/
+            - /data/docker/fhem-docker/nodered/data/:/data/
         networks:
             - fhem-network
         depends_on:
