@@ -52,8 +52,8 @@ services:
             - "1883"
             - "9001"
         ports:
-            - "1883:1883"
-            - "9001:9001"
+            - "1884:1883"
+            - "9002:9001"
         image: toke/mosquitto
         networks:
             - fhem-network
